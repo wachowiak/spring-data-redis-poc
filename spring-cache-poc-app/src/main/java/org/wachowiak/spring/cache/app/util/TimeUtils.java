@@ -1,21 +1,20 @@
 package org.wachowiak.spring.cache.app.util;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class TimeUtils {
+
+    private static final Logger LOG = LoggerFactory.getLogger(TimeUtils.class);
 
     private TimeUtils(){}
 
     public static void sleep(long millis){
         try {
+            LOG.debug("time consuming operation in progress...");
             Thread.sleep(millis);
-        } catch (InterruptedException e) {}
+        } catch (InterruptedException e) {
+            LOG.warn("time consuming operation interrupted", e);
+        }
     }
-
-    public static Date toDate(LocalDateTime localDateTime){
-        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
-    }
-
 }

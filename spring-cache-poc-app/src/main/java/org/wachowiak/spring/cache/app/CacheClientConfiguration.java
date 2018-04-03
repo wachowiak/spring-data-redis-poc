@@ -41,11 +41,11 @@ class CacheClientConfiguration extends CachingConfigurerSupport{
     }
 
     @Bean
-    CacheManager redisCacheManager() {
+    @Override
+    public CacheManager cacheManager() {
         LOG.info("Initializing Redis cache manager. Cache expiration: {} s", cacheExpiration);
         RedisTemplate template = new RedisTemplate();
         template.setConnectionFactory(redisConnectionFactory());
-//        template.setKeySerializer(new StringRedisSerializer());
         template.setValueSerializer(new JdkSerializationRedisSerializer());
         template.afterPropertiesSet();
         RedisCacheManager cacheMgr = new RedisCacheManager(template);
