@@ -1,5 +1,6 @@
 package org.wachowiak.spring.cache.app.demo;
 
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,16 +11,16 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.hamcrest.Matchers.isEmptyOrNullString;
 import static org.hamcrest.Matchers.startsWith;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.wachowiak.spring.cache.app.demo.MathController.E;
+import static org.wachowiak.spring.cache.app.demo.MathController.PI;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(CounterController.class)
-public class CounterControllerTest {
+@WebMvcTest(MathController.class)
+public class MathControllerIntegrationTest {
 
     private WebApplicationContext context;
     private MockMvc mvc;
@@ -37,25 +38,16 @@ public class CounterControllerTest {
     }
 
     @Test
-    public void getForInvalidKeyMustReturnNull() throws Exception {
-
-        String key = "keyNull";
-
-        mvc.perform(get("/get/" + key))
+    public void piMustReturnCorrectValue() throws Exception {
+        mvc.perform(get("/pi"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(isEmptyOrNullString()));
+                .andExpect(content().string(startsWith(PI)));
     }
 
     @Test
-    public void getAfterIncMustReturnOne() throws Exception {
-
-        String key = "key";
-
-        mvc.perform(post("/inc/" + key))
-                .andExpect(status().isOk());
-
-        mvc.perform(get("/get/" + key))
+    public void eMustReturnCorrectValue() throws Exception {
+        mvc.perform(get("/e"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(startsWith("1")));
+                .andExpect(content().string(startsWith(E)));
     }
 }
